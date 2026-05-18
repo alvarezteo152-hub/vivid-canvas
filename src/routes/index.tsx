@@ -18,11 +18,78 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const menu = [
+const featured = [
   { name: "Hamburguesa Wagyu", desc: "Carne wagyu, queso fundido, lechuga fresca, brioche artesano.", price: "14,50 €", img: heroBurger, tag: "Ezaguna" },
-  { name: "Thai Burger", desc: "Hanburgesa berezia, salsa Thai, verdura crujiente, pan de sésamo.", price: "13,00 €", img: thaiBurger, tag: "Berezia" },
+  { name: "Hamburguesa Diabla", desc: "Carne de vacuno, jalapeños, salsa diabla picante, cheddar fundido.", price: "13,50 €", img: thaiBurger, tag: "Ezaguna" },
   { name: "Patatas Alioli", desc: "Patatas crujientes con salsa alioli casera.", price: "6,50 €", img: patatasAlioli, tag: "Ezaguna" },
   { name: "Bocata Ibérico", desc: "Jamón ibérico, pan crujiente, aceite de oliva virgen extra.", price: "9,80 €", img: bocata },
+];
+
+const menuSections = [
+  {
+    title: "Hanburgesak",
+    subtitle: "Hamburguesas",
+    items: [
+      { name: "Hamburguesa Wagyu", desc: "Wagyu, queso fundido, lechuga, brioche artesano.", price: "14,50 €", tag: "Ezaguna" },
+      { name: "Hamburguesa Diabla", desc: "Vacuno, jalapeños, salsa diabla, cheddar.", price: "13,50 €", tag: "Ezaguna" },
+      { name: "Thai Burger", desc: "Salsa thai, verdura crujiente, pan de sésamo.", price: "13,00 €" },
+      { name: "Hamburguesa Aldapa", desc: "La especial de la casa: bacon, cebolla caramelizada, queso azul.", price: "12,50 €" },
+      { name: "Hamburguesa BBQ", desc: "Salsa barbacoa, bacon crujiente, cheddar y cebolla frita.", price: "12,00 €" },
+      { name: "Hamburguesa Clásica", desc: "Vacuno, tomate, lechuga, cebolla y queso.", price: "10,50 €" },
+      { name: "Hamburguesa Vegetal", desc: "Hamburguesa vegetal, pimientos asados, rúcula y alioli.", price: "10,00 €" },
+      { name: "Hamburguesa Pollo Crispy", desc: "Pollo crujiente, lechuga, tomate y salsa césar.", price: "11,00 €" },
+    ],
+  },
+  {
+    title: "Bokatak",
+    subtitle: "Bocatas",
+    items: [
+      { name: "Bocata Ibérico", desc: "Jamón ibérico, pan crujiente, aceite de oliva virgen.", price: "9,80 €" },
+      { name: "Bocata Lomo y Queso", desc: "Lomo a la plancha con queso fundido.", price: "7,50 €" },
+      { name: "Bocata Calamares", desc: "Calamares a la andaluza con alioli.", price: "8,00 €" },
+      { name: "Bocata Txistorra", desc: "Txistorra de Navarra a la plancha.", price: "7,00 €" },
+      { name: "Bocata Bacon y Queso", desc: "Bacon crujiente y queso fundido.", price: "7,50 €" },
+      { name: "Bocata Vegetal", desc: "Lechuga, tomate, huevo, atún y mayonesa.", price: "6,80 €" },
+    ],
+  },
+  {
+    title: "Raziuak",
+    subtitle: "Raciones",
+    items: [
+      { name: "Patatas Alioli", desc: "Patatas crujientes con alioli casero.", price: "6,50 €", tag: "Ezaguna" },
+      { name: "Patatas Bravas", desc: "Con salsa brava picante de la casa.", price: "6,50 €" },
+      { name: "Calamares a la Andaluza", desc: "Rebozados, crujientes, con limón.", price: "12,00 €" },
+      { name: "Croquetas Caseras", desc: "De jamón ibérico, 6 unidades.", price: "8,50 €" },
+      { name: "Tabla de Ibéricos", desc: "Jamón, chorizo y lomo ibérico con pan.", price: "16,00 €" },
+      { name: "Tabla de Quesos", desc: "Selección de quesos del País Vasco.", price: "14,00 €" },
+      { name: "Pimientos del Padrón", desc: "Fritos con sal gruesa.", price: "7,50 €" },
+      { name: "Ensaladilla Rusa", desc: "Receta de la casa con bonito del norte.", price: "7,00 €" },
+      { name: "Chistorra con Patatas", desc: "Chistorra a la sidra con patatas caseras.", price: "9,00 €" },
+      { name: "Alitas de Pollo", desc: "Picantes o BBQ, con dips caseros.", price: "8,50 €" },
+    ],
+  },
+  {
+    title: "Pintxoak",
+    subtitle: "Pintxos",
+    items: [
+      { name: "Gilda", desc: "Anchoa, aceituna y guindilla.", price: "2,20 €" },
+      { name: "Tortilla de Patata", desc: "Jugosa, recién hecha.", price: "2,50 €" },
+      { name: "Pintxo de Bacalao", desc: "Bacalao confitado con pimiento rojo.", price: "3,00 €" },
+      { name: "Pintxo de Tortilla con Bacon", desc: "Tortilla cremosa con bacon crujiente.", price: "2,80 €" },
+      { name: "Champis a la Plancha", desc: "Con ajo, perejil y gambas.", price: "3,50 €" },
+      { name: "Pintxo Moruno", desc: "Brocheta de cerdo especiada.", price: "3,00 €" },
+    ],
+  },
+  {
+    title: "Postreak",
+    subtitle: "Postres",
+    items: [
+      { name: "Tarta de Queso", desc: "Estilo La Viña, cremosa y dorada.", price: "5,50 €" },
+      { name: "Cuajada con Miel y Nueces", desc: "Tradicional, casera.", price: "4,50 €" },
+      { name: "Goxua", desc: "Postre vasco con nata, bizcocho y crema tostada.", price: "4,80 €" },
+      { name: "Coulant de Chocolate", desc: "Con corazón fundido y helado de vainilla.", price: "5,50 €" },
+    ],
+  },
 ];
 
 const reviews = [
@@ -128,21 +195,21 @@ function Home() {
         </div>
       </section>
 
-      {/* Menu */}
+      {/* Featured */}
       <section id="menua" className="py-28 px-6 bg-background">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
             <div>
-              <p className="text-xs uppercase tracking-[0.25em] text-ember mb-3">Menua</p>
-              <h2 className="text-5xl md:text-6xl font-bold text-charcoal">Plater aipagarriak</h2>
+              <p className="text-xs uppercase tracking-[0.25em] text-ember mb-3">Aipagarriak</p>
+              <h2 className="text-5xl md:text-6xl font-bold text-charcoal">Plater izarrak</h2>
             </div>
             <p className="max-w-md text-muted-foreground">
-              Karta laburra, baina gauza gutxi eta onak askok eta txarrek baino. Egunero prestatzen ditugu osagai freskoekin.
+              Bezeroek gehien eskatzen dituztenak. Egunero osagai freskoekin prestatuak.
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {menu.map((item) => (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
+            {featured.map((item) => (
               <article key={item.name} className="group relative bg-card rounded-2xl overflow-hidden border border-border hover:shadow-[var(--shadow-warm)] hover:-translate-y-1 transition-all duration-500">
                 <div className="aspect-[4/5] overflow-hidden bg-muted relative">
                   <img src={item.img} alt={item.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
@@ -162,6 +229,47 @@ function Home() {
               </article>
             ))}
           </div>
+
+          <div className="text-center mb-16">
+            <p className="text-xs uppercase tracking-[0.25em] text-ember mb-3">Karta osoa</p>
+            <h2 className="text-5xl md:text-6xl font-bold text-charcoal">Menu osoa</h2>
+            <p className="mt-4 text-muted-foreground max-w-xl mx-auto">
+              Hanburgesak, bokatak, raziak, pintxoak eta postreak. Aukera zabala denentzat.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-x-16 gap-y-14">
+            {menuSections.map((section) => (
+              <div key={section.title}>
+                <div className="flex items-baseline gap-3 mb-6 pb-3 border-b border-ember/30">
+                  <h3 className="font-display text-3xl text-charcoal font-bold">{section.title}</h3>
+                  <span className="text-sm text-muted-foreground italic">{section.subtitle}</span>
+                </div>
+                <ul className="space-y-5">
+                  {section.items.map((item) => (
+                    <li key={item.name} className="flex gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-baseline gap-2 mb-1">
+                          <h4 className="font-semibold text-charcoal">{item.name}</h4>
+                          {item.tag && (
+                            <span className="px-2 py-0.5 bg-gold/20 text-ember text-[9px] font-bold tracking-widest uppercase rounded-full">
+                              {item.tag}
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                      </div>
+                      <span className="font-display text-ember whitespace-nowrap font-semibold">{item.price}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-center text-xs text-muted-foreground mt-16 italic">
+            * Prezioak orientagarriak dira. Karta sasoiaren arabera alda daiteke.
+          </p>
         </div>
       </section>
 
