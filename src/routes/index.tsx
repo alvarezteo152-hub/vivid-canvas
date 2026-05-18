@@ -195,21 +195,21 @@ function Home() {
         </div>
       </section>
 
-      {/* Menu */}
+      {/* Featured */}
       <section id="menua" className="py-28 px-6 bg-background">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
             <div>
-              <p className="text-xs uppercase tracking-[0.25em] text-ember mb-3">Menua</p>
-              <h2 className="text-5xl md:text-6xl font-bold text-charcoal">Plater aipagarriak</h2>
+              <p className="text-xs uppercase tracking-[0.25em] text-ember mb-3">Aipagarriak</p>
+              <h2 className="text-5xl md:text-6xl font-bold text-charcoal">Plater izarrak</h2>
             </div>
             <p className="max-w-md text-muted-foreground">
-              Karta laburra, baina gauza gutxi eta onak askok eta txarrek baino. Egunero prestatzen ditugu osagai freskoekin.
+              Bezeroek gehien eskatzen dituztenak. Egunero osagai freskoekin prestatuak.
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {menu.map((item) => (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
+            {featured.map((item) => (
               <article key={item.name} className="group relative bg-card rounded-2xl overflow-hidden border border-border hover:shadow-[var(--shadow-warm)] hover:-translate-y-1 transition-all duration-500">
                 <div className="aspect-[4/5] overflow-hidden bg-muted relative">
                   <img src={item.img} alt={item.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
@@ -229,6 +229,47 @@ function Home() {
               </article>
             ))}
           </div>
+
+          <div className="text-center mb-16">
+            <p className="text-xs uppercase tracking-[0.25em] text-ember mb-3">Karta osoa</p>
+            <h2 className="text-5xl md:text-6xl font-bold text-charcoal">Menu osoa</h2>
+            <p className="mt-4 text-muted-foreground max-w-xl mx-auto">
+              Hanburgesak, bokatak, raziak, pintxoak eta postreak. Aukera zabala denentzat.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-x-16 gap-y-14">
+            {menuSections.map((section) => (
+              <div key={section.title}>
+                <div className="flex items-baseline gap-3 mb-6 pb-3 border-b border-ember/30">
+                  <h3 className="font-display text-3xl text-charcoal font-bold">{section.title}</h3>
+                  <span className="text-sm text-muted-foreground italic">{section.subtitle}</span>
+                </div>
+                <ul className="space-y-5">
+                  {section.items.map((item) => (
+                    <li key={item.name} className="flex gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-baseline gap-2 mb-1">
+                          <h4 className="font-semibold text-charcoal">{item.name}</h4>
+                          {item.tag && (
+                            <span className="px-2 py-0.5 bg-gold/20 text-ember text-[9px] font-bold tracking-widest uppercase rounded-full">
+                              {item.tag}
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                      </div>
+                      <span className="font-display text-ember whitespace-nowrap font-semibold">{item.price}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-center text-xs text-muted-foreground mt-16 italic">
+            * Prezioak orientagarriak dira. Karta sasoiaren arabera alda daiteke.
+          </p>
         </div>
       </section>
 
