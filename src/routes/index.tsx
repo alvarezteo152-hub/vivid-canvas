@@ -346,7 +346,7 @@ function Home() {
             </div>
 
             <a
-              href="https://www.google.com/maps/place/Bar+Aldapa/@43.0923559,-2.3165071,17z"
+              href="https://www.google.com/maps/place/Bar+Aldapa/@43.0923559,-2.3165071,17z/data=!3m1!5s0xd502ded3b743059:0x71e49568fcdb431!4m6!3m5!1s0xd502ded3b54042f:0x5c5e87173cf279e7!8m2!3d43.092352!4d-2.3139322!16s%2Fg%2F1tgdvg3_?entry=ttu&g_ep=EgoyMDI2MDUxMy4wIKXMDSoASAFQAw%3D%3D"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 mt-10 px-7 py-3.5 rounded-full bg-charcoal text-cream hover:bg-ember transition"
