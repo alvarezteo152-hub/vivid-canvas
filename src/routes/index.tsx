@@ -18,11 +18,78 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const menu = [
+const featured = [
   { name: "Hamburguesa Wagyu", desc: "Carne wagyu, queso fundido, lechuga fresca, brioche artesano.", price: "14,50 €", img: heroBurger, tag: "Ezaguna" },
-  { name: "Thai Burger", desc: "Hanburgesa berezia, salsa Thai, verdura crujiente, pan de sésamo.", price: "13,00 €", img: thaiBurger, tag: "Berezia" },
+  { name: "Hamburguesa Diabla", desc: "Carne de vacuno, jalapeños, salsa diabla picante, cheddar fundido.", price: "13,50 €", img: thaiBurger, tag: "Ezaguna" },
   { name: "Patatas Alioli", desc: "Patatas crujientes con salsa alioli casera.", price: "6,50 €", img: patatasAlioli, tag: "Ezaguna" },
   { name: "Bocata Ibérico", desc: "Jamón ibérico, pan crujiente, aceite de oliva virgen extra.", price: "9,80 €", img: bocata },
+];
+
+const menuSections = [
+  {
+    title: "Hanburgesak",
+    subtitle: "Hamburguesas",
+    items: [
+      { name: "Hamburguesa Wagyu", desc: "Wagyu, queso fundido, lechuga, brioche artesano.", price: "14,50 €", tag: "Ezaguna" },
+      { name: "Hamburguesa Diabla", desc: "Vacuno, jalapeños, salsa diabla, cheddar.", price: "13,50 €", tag: "Ezaguna" },
+      { name: "Thai Burger", desc: "Salsa thai, verdura crujiente, pan de sésamo.", price: "13,00 €" },
+      { name: "Hamburguesa Aldapa", desc: "La especial de la casa: bacon, cebolla caramelizada, queso azul.", price: "12,50 €" },
+      { name: "Hamburguesa BBQ", desc: "Salsa barbacoa, bacon crujiente, cheddar y cebolla frita.", price: "12,00 €" },
+      { name: "Hamburguesa Clásica", desc: "Vacuno, tomate, lechuga, cebolla y queso.", price: "10,50 €" },
+      { name: "Hamburguesa Vegetal", desc: "Hamburguesa vegetal, pimientos asados, rúcula y alioli.", price: "10,00 €" },
+      { name: "Hamburguesa Pollo Crispy", desc: "Pollo crujiente, lechuga, tomate y salsa césar.", price: "11,00 €" },
+    ],
+  },
+  {
+    title: "Bokatak",
+    subtitle: "Bocatas",
+    items: [
+      { name: "Bocata Ibérico", desc: "Jamón ibérico, pan crujiente, aceite de oliva virgen.", price: "9,80 €" },
+      { name: "Bocata Lomo y Queso", desc: "Lomo a la plancha con queso fundido.", price: "7,50 €" },
+      { name: "Bocata Calamares", desc: "Calamares a la andaluza con alioli.", price: "8,00 €" },
+      { name: "Bocata Txistorra", desc: "Txistorra de Navarra a la plancha.", price: "7,00 €" },
+      { name: "Bocata Bacon y Queso", desc: "Bacon crujiente y queso fundido.", price: "7,50 €" },
+      { name: "Bocata Vegetal", desc: "Lechuga, tomate, huevo, atún y mayonesa.", price: "6,80 €" },
+    ],
+  },
+  {
+    title: "Raziuak",
+    subtitle: "Raciones",
+    items: [
+      { name: "Patatas Alioli", desc: "Patatas crujientes con alioli casero.", price: "6,50 €", tag: "Ezaguna" },
+      { name: "Patatas Bravas", desc: "Con salsa brava picante de la casa.", price: "6,50 €" },
+      { name: "Calamares a la Andaluza", desc: "Rebozados, crujientes, con limón.", price: "12,00 €" },
+      { name: "Croquetas Caseras", desc: "De jamón ibérico, 6 unidades.", price: "8,50 €" },
+      { name: "Tabla de Ibéricos", desc: "Jamón, chorizo y lomo ibérico con pan.", price: "16,00 €" },
+      { name: "Tabla de Quesos", desc: "Selección de quesos del País Vasco.", price: "14,00 €" },
+      { name: "Pimientos del Padrón", desc: "Fritos con sal gruesa.", price: "7,50 €" },
+      { name: "Ensaladilla Rusa", desc: "Receta de la casa con bonito del norte.", price: "7,00 €" },
+      { name: "Chistorra con Patatas", desc: "Chistorra a la sidra con patatas caseras.", price: "9,00 €" },
+      { name: "Alitas de Pollo", desc: "Picantes o BBQ, con dips caseros.", price: "8,50 €" },
+    ],
+  },
+  {
+    title: "Pintxoak",
+    subtitle: "Pintxos",
+    items: [
+      { name: "Gilda", desc: "Anchoa, aceituna y guindilla.", price: "2,20 €" },
+      { name: "Tortilla de Patata", desc: "Jugosa, recién hecha.", price: "2,50 €" },
+      { name: "Pintxo de Bacalao", desc: "Bacalao confitado con pimiento rojo.", price: "3,00 €" },
+      { name: "Pintxo de Tortilla con Bacon", desc: "Tortilla cremosa con bacon crujiente.", price: "2,80 €" },
+      { name: "Champis a la Plancha", desc: "Con ajo, perejil y gambas.", price: "3,50 €" },
+      { name: "Pintxo Moruno", desc: "Brocheta de cerdo especiada.", price: "3,00 €" },
+    ],
+  },
+  {
+    title: "Postreak",
+    subtitle: "Postres",
+    items: [
+      { name: "Tarta de Queso", desc: "Estilo La Viña, cremosa y dorada.", price: "5,50 €" },
+      { name: "Cuajada con Miel y Nueces", desc: "Tradicional, casera.", price: "4,50 €" },
+      { name: "Goxua", desc: "Postre vasco con nata, bizcocho y crema tostada.", price: "4,80 €" },
+      { name: "Coulant de Chocolate", desc: "Con corazón fundido y helado de vainilla.", price: "5,50 €" },
+    ],
+  },
 ];
 
 const reviews = [
