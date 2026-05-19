@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 import { MapPin, Phone, Clock, Star, Utensils, ShoppingBag, Bike, Quote } from "lucide-react";
 import heroBurger from "@/assets/hero-burger.jpg";
 import patatasAlioli from "@/assets/patatas-alioli.jpg";
@@ -18,100 +19,173 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
+type Lang = "eu" | "es";
+
+const translations = {
+  eu: {
+    nav: { menu: "Menua", about: "Honi buruz", reviews: "Iritziak", contact: "Kontaktua", reserve: "Erreserbatu" },
+    hero: {
+      badge: "Urretxu · Gipuzkoa",
+      title1: "Hanburgesak,",
+      title2: "pintxoak",
+      title3: "& giro ona.",
+      desc: "Bar Aldapa. Urretxuko bihotzean dagoen taberna, hanburgesa bereziak, bokata epelak eta pintxo gozoekin.",
+      reviews: "iritzi",
+      perPerson: "10 — 20 € pertsonako",
+      seeMenu: "Ikusi menua",
+      status: "Gaurko egoera",
+      closed: "Itxita dago",
+      opening: "Irekitze-ordua gaur",
+      eatIn: "Bertan jan",
+      takeAway: "Eramateko",
+      delivery: "Etxez etxe",
+    },
+    featured: { kicker: "Aipagarriak", title: "Plater izarrak", desc: "Bezeroek gehien eskatzen dituztenak. Egunero osagai freskoekin prestatuak.", tag: "Ezaguna" },
+    menu: { kicker: "Karta osoa", title: "Menu osoa", desc: "Hanburgesak, bokatak, raziak eta postreak. Aukera zabala denentzat.", disclaimer: "* Prezioak orientagarriak dira. Karta sasoiaren arabera alda daiteke." },
+    about: { kicker: "Honi buruz", title: "Auzoko taberna, eskuz eginiko sukaldea.", desc: "Areizaga kalean, Urretxuko erdigunean. Hanburgesa berezietan, bokata epeletan eta pintxo gozoetan espezializatuta gauden taberna familiarra gara. Karta laburra, kalitatezko osagaiak eta tratu hurbila.", stat1: "178 iritzi", stat2: "Pertsonako", stat3: "Eskuragarri", recommend: "pertsonek gomendatzen dute" },
+    reviewsSec: { kicker: "Iritziak", title: "Bezeroek diotena" },
+    contact: { kicker: "Kontaktua", title: "Etorri, gose izan zaitez.", address: "Helbidea", phone: "Telefonoa", schedule: "Ordutegia", schedShort: ["Ast: itxita", "Ar-Ig: 17:00 — 23:00"], maps: "Ikusi Google Maps-en", fullSchedule: "Ordutegi osoa" },
+    menuSections: [
+      { title: "Hanburgesak", subtitle: "Hamburguesas" },
+      { title: "Bokatak", subtitle: "Bocadillos" },
+      { title: "Raziuak", subtitle: "Raciones" },
+      { title: "Postreak", subtitle: "Postres" },
+    ],
+    schedule: [
+      ["Astelehena", "Itxita"],
+      ["Asteartea", "17:00 — 23:00"],
+      ["Asteazkena", "17:00 — 23:00"],
+      ["Osteguna", "17:00 — 23:00"],
+      ["Ostirala", "17:00 — 00:00"],
+      ["Larunbata", "12:00 — 00:00"],
+      ["Igandea", "12:00 — 22:00"],
+    ],
+    closedLabel: "Itxita",
+  },
+  es: {
+    nav: { menu: "Menú", about: "Sobre nosotros", reviews: "Opiniones", contact: "Contacto", reserve: "Reservar" },
+    hero: {
+      badge: "Urretxu · Gipuzkoa",
+      title1: "Hamburguesas,",
+      title2: "pintxos",
+      title3: "y buen ambiente.",
+      desc: "Bar Aldapa. Taberna en el corazón de Urretxu, con hamburguesas especiales, bocatas calientes y pintxos deliciosos.",
+      reviews: "opiniones",
+      perPerson: "10 — 20 € por persona",
+      seeMenu: "Ver menú",
+      status: "Estado de hoy",
+      closed: "Cerrado",
+      opening: "Apertura hoy",
+      eatIn: "Comer aquí",
+      takeAway: "Para llevar",
+      delivery: "A domicilio",
+    },
+    featured: { kicker: "Destacados", title: "Platos estrella", desc: "Los más pedidos por nuestros clientes. Preparados a diario con ingredientes frescos.", tag: "Popular" },
+    menu: { kicker: "Carta completa", title: "Menú completo", desc: "Hamburguesas, bocadillos, raciones y postres. Amplia variedad para todos.", disclaimer: "* Precios orientativos. La carta puede variar según la temporada." },
+    about: { kicker: "Sobre nosotros", title: "Taberna de barrio, cocina artesana.", desc: "En la calle Areizaga, en el centro de Urretxu. Somos una taberna familiar especializada en hamburguesas especiales, bocatas calientes y pintxos deliciosos. Carta corta, ingredientes de calidad y trato cercano.", stat1: "178 opiniones", stat2: "Por persona", stat3: "Disponibles", recommend: "personas lo recomiendan" },
+    reviewsSec: { kicker: "Opiniones", title: "Lo que dicen los clientes" },
+    contact: { kicker: "Contacto", title: "Ven, ten hambre.", address: "Dirección", phone: "Teléfono", schedule: "Horario", schedShort: ["Lun: cerrado", "Mar-Dom: 17:00 — 23:00"], maps: "Ver en Google Maps", fullSchedule: "Horario completo" },
+    menuSections: [
+      { title: "Hamburguesas", subtitle: "Hanburgesak" },
+      { title: "Bocadillos", subtitle: "Bokatak" },
+      { title: "Raciones", subtitle: "Raziuak" },
+      { title: "Postres", subtitle: "Postreak" },
+    ],
+    schedule: [
+      ["Lunes", "Cerrado"],
+      ["Martes", "17:00 — 23:00"],
+      ["Miércoles", "17:00 — 23:00"],
+      ["Jueves", "17:00 — 23:00"],
+      ["Viernes", "17:00 — 00:00"],
+      ["Sábado", "12:00 — 00:00"],
+      ["Domingo", "12:00 — 22:00"],
+    ],
+    closedLabel: "Cerrado",
+  },
+} as const;
+
 const featured = [
-  { name: "Hamburguesa Wagyu", desc: "Carne wagyu, queso fundido, lechuga fresca, brioche artesano.", price: "14,50 €", img: heroBurger, tag: "Ezaguna" },
-  { name: "Hamburguesa Diabla", desc: "Carne de vacuno, jalapeños, salsa diabla picante, cheddar fundido.", price: "13,50 €", img: thaiBurger, tag: "Ezaguna" },
-  { name: "Patatas Alioli", desc: "Patatas crujientes con salsa alioli casera.", price: "6,50 €", img: patatasAlioli, tag: "Ezaguna" },
+  { name: "Hamburguesa Wagyu", desc: "Carne wagyu, queso fundido, lechuga fresca, brioche artesano.", price: "14,50 €", img: heroBurger, tagged: true },
+  { name: "Hamburguesa Diabla", desc: "Carne de vacuno, jalapeños, salsa diabla picante, cheddar fundido.", price: "13,50 €", img: thaiBurger, tagged: true },
+  { name: "Patatas Alioli", desc: "Patatas crujientes con salsa alioli casera.", price: "6,50 €", img: patatasAlioli, tagged: true },
   { name: "Bocata Ibérico", desc: "Jamón ibérico, pan crujiente, aceite de oliva virgen extra.", price: "9,80 €", img: bocata },
 ];
 
-const menuSections = [
-  {
-    title: "Hanburgesak",
-    subtitle: "Hamburguesas",
-    items: [
-      { name: "Hamburguesa Wagyu", desc: "Wagyu, queso fundido, lechuga, brioche artesano.", price: "14,50 €", tag: "Ezaguna" },
-      { name: "Hamburguesa Diabla", desc: "Vacuno, jalapeños, salsa diabla, cheddar.", price: "13,50 €", tag: "Ezaguna" },
-      { name: "Thai Burger", desc: "Salsa thai, verdura crujiente, pan de sésamo.", price: "13,00 €" },
-      { name: "Hamburguesa Aldapa", desc: "La especial de la casa: bacon, cebolla caramelizada, queso azul.", price: "12,50 €" },
-      { name: "Hamburguesa BBQ", desc: "Salsa barbacoa, bacon crujiente, cheddar y cebolla frita.", price: "12,00 €" },
-      { name: "Hamburguesa Clásica", desc: "Vacuno, tomate, lechuga, cebolla y queso.", price: "10,50 €" },
-      { name: "Hamburguesa Vegetal", desc: "Hamburguesa vegetal, pimientos asados, rúcula y alioli.", price: "10,00 €" },
-      { name: "Hamburguesa Pollo Crispy", desc: "Pollo crujiente, lechuga, tomate y salsa césar.", price: "11,00 €" },
-    ],
-  },
-  {
-    title: "Bokatak",
-    subtitle: "Bocadillos",
-    items: [
-      { name: "ALDAPA B1", desc: "Pulled pork, cebolla crujiente, bacon crujiente, queso cheddar.", price: "8,50 €" },
-      { name: "ALDAPA B2", desc: "Calamares y alioli.", price: "8,00 €" },
-      { name: "ALDAPA B3", desc: "Lomo ibérico a la plancha, queso brie, cebolla caramelizada.", price: "8,00 €" },
-      { name: "ALDAPA B4", desc: "Pechuga, salsa roquefort, cebolla caramelizada.", price: "7,50 €" },
-      { name: "ALDAPA B5", desc: "Vegetal: lechuga, tomate, pavo braseado, huevo duro, aguacate y mayonesa.", price: "7,50 €" },
-      { name: "ALDAPA B6", desc: "Pechuga empanada, pimiento verde, queso trufado, cebolla.", price: "7,50 €" },
-      { name: "ALDAPA B7", desc: "Lomo, queso Idiazábal, pimiento rojo caramelizado.", price: "8,50 €" },
-    ],
-  },
-  {
-    title: "Raziuak",
-    subtitle: "Raciones",
-    items: [
-      { name: "Patatas caseras", desc: "Bravas o alioli.", price: "7,50 €" },
-      { name: "Calamares", desc: "Calamares con alioli.", price: "10,00 €" },
-      { name: "Alitas de pollo", desc: "Alitas de pollo con salsa barbacoa.", price: "7,50 €" },
-      { name: "Croquetas ibéricas", desc: "", price: "7,50 €" },
-      { name: "Tequeños", desc: "Tequeños con salsa.", price: "8,50 €" },
-      { name: "Pollo Kentucky", desc: "Pollo Kentucky con dos salsas.", price: "8,50 €" },
-      { name: "Jamón ibérico", desc: "", price: "18,00 €" },
-      { name: "Pulpo", desc: "Solo fines de semana.", price: "18,00 €" },
-    ],
-  },
-  {
-    title: "Postreak",
-    subtitle: "Postres",
-    items: [
-      { name: "Tarta de queso", desc: "", price: "6,50 €" },
-      { name: "Coulant", desc: "", price: "5,50 €" },
-    ],
-  },
+const menuItems = [
+  [
+    { name: "Hamburguesa Wagyu", desc: "Wagyu, queso fundido, lechuga, brioche artesano.", price: "14,50 €", tagged: true },
+    { name: "Hamburguesa Diabla", desc: "Vacuno, jalapeños, salsa diabla, cheddar.", price: "13,50 €", tagged: true },
+    { name: "Thai Burger", desc: "Salsa thai, verdura crujiente, pan de sésamo.", price: "13,00 €" },
+    { name: "Hamburguesa Aldapa", desc: "La especial de la casa: bacon, cebolla caramelizada, queso azul.", price: "12,50 €" },
+    { name: "Hamburguesa BBQ", desc: "Salsa barbacoa, bacon crujiente, cheddar y cebolla frita.", price: "12,00 €" },
+    { name: "Hamburguesa Clásica", desc: "Vacuno, tomate, lechuga, cebolla y queso.", price: "10,50 €" },
+    { name: "Hamburguesa Vegetal", desc: "Hamburguesa vegetal, pimientos asados, rúcula y alioli.", price: "10,00 €" },
+    { name: "Hamburguesa Pollo Crispy", desc: "Pollo crujiente, lechuga, tomate y salsa césar.", price: "11,00 €" },
+  ],
+  [
+    { name: "ALDAPA B1", desc: "Pulled pork, cebolla crujiente, bacon crujiente, queso cheddar.", price: "8,50 €" },
+    { name: "ALDAPA B2", desc: "Calamares y alioli.", price: "8,00 €" },
+    { name: "ALDAPA B3", desc: "Lomo ibérico a la plancha, queso brie, cebolla caramelizada.", price: "8,00 €" },
+    { name: "ALDAPA B4", desc: "Pechuga, salsa roquefort, cebolla caramelizada.", price: "7,50 €" },
+    { name: "ALDAPA B5", desc: "Vegetal: lechuga, tomate, pavo braseado, huevo duro, aguacate y mayonesa.", price: "7,50 €" },
+    { name: "ALDAPA B6", desc: "Pechuga empanada, pimiento verde, queso trufado, cebolla.", price: "7,50 €" },
+    { name: "ALDAPA B7", desc: "Lomo, queso Idiazábal, pimiento rojo caramelizado.", price: "8,50 €" },
+  ],
+  [
+    { name: "Patatas caseras", desc: "Bravas o alioli.", price: "7,50 €" },
+    { name: "Calamares", desc: "Calamares con alioli.", price: "10,00 €" },
+    { name: "Alitas de pollo", desc: "Alitas de pollo con salsa barbacoa.", price: "7,50 €" },
+    { name: "Croquetas ibéricas", desc: "", price: "7,50 €" },
+    { name: "Tequeños", desc: "Tequeños con salsa.", price: "8,50 €" },
+    { name: "Pollo Kentucky", desc: "Pollo Kentucky con dos salsas.", price: "8,50 €" },
+    { name: "Jamón ibérico", desc: "", price: "18,00 €" },
+    { name: "Pulpo", desc: "Solo fines de semana.", price: "18,00 €" },
+  ],
+  [
+    { name: "Tarta de queso", desc: "", price: "6,50 €" },
+    { name: "Coulant", desc: "", price: "5,50 €" },
+  ],
 ];
 
-const reviews = [
-  { name: "Igor", text: "Gomendatzeko modukoa hanburgesak espezialitate bezela daukaten taberna hau. Zerbitzu bikaina eta hanburgesa bereziak aukeran.", rating: 5 },
-  { name: "Angel Villanueva", text: "Kafea hartzeko toki ederra. Zerbitzu bikaina.", rating: 5 },
-  { name: "666", text: "Pintxo ederrak. Gomendatzen dut.", rating: 4 },
-];
-
-const schedule = [
-  ["Astelehena", "Itxita"],
-  ["Asteartea", "17:00 — 23:00"],
-  ["Asteazkena", "17:00 — 23:00"],
-  ["Osteguna", "17:00 — 23:00"],
-  ["Ostirala", "17:00 — 00:00"],
-  ["Larunbata", "12:00 — 00:00"],
-  ["Igandea", "12:00 — 22:00"],
-];
+const reviewsData = {
+  eu: [
+    { name: "Igor", text: "Gomendatzeko modukoa hanburgesak espezialitate bezela daukaten taberna hau. Zerbitzu bikaina eta hanburgesa bereziak aukeran.", rating: 5 },
+    { name: "Angel Villanueva", text: "Kafea hartzeko toki ederra. Zerbitzu bikaina.", rating: 5 },
+    { name: "666", text: "Pintxo ederrak. Gomendatzen dut.", rating: 4 },
+  ],
+  es: [
+    { name: "Igor", text: "Una taberna muy recomendable que tiene las hamburguesas como especialidad. Servicio excelente y hamburguesas especiales a elegir.", rating: 5 },
+    { name: "Angel Villanueva", text: "Un lugar bonito para tomar café. Servicio excelente.", rating: 5 },
+    { name: "666", text: "Pintxos buenísimos. Lo recomiendo.", rating: 4 },
+  ],
+};
 
 function Home() {
+  const [lang, setLang] = useState<Lang>("eu");
+  const t = translations[lang];
+  const reviews = reviewsData[lang];
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Nav */}
       <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-charcoal/70 border-b border-white/5">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <a href="#top" className="flex items-center gap-2">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+          <a href="#top" className="flex items-center gap-2 shrink-0">
             <span className="w-9 h-9 rounded-full bg-[image:var(--gradient-warm)] grid place-items-center text-cream font-display font-bold">A</span>
             <span className="font-display text-xl text-cream tracking-tight">Bar Aldapa</span>
           </a>
           <nav className="hidden md:flex items-center gap-8 text-sm text-cream/80">
-            <a href="#menua" className="hover:text-gold transition">Menua</a>
-            <a href="#honi-buruz" className="hover:text-gold transition">Honi buruz</a>
-            <a href="#iritziak" className="hover:text-gold transition">Iritziak</a>
-            <a href="#kontaktua" className="hover:text-gold transition">Kontaktua</a>
+            <a href="#menua" className="hover:text-gold transition">{t.nav.menu}</a>
+            <a href="#honi-buruz" className="hover:text-gold transition">{t.nav.about}</a>
+            <a href="#iritziak" className="hover:text-gold transition">{t.nav.reviews}</a>
+            <a href="#kontaktua" className="hover:text-gold transition">{t.nav.contact}</a>
           </nav>
-          <a href="tel:+34943252592" className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-ember text-primary-foreground text-sm font-medium hover:opacity-90 transition shadow-[var(--shadow-warm)]">
-            <Phone className="w-4 h-4" /> Erreserbatu
-          </a>
+          <div className="flex items-center gap-3">
+            <LangToggle lang={lang} setLang={setLang} />
+            <a href="tel:+34943252592" className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-ember text-primary-foreground text-sm font-medium hover:opacity-90 transition shadow-[var(--shadow-warm)]">
+              <Phone className="w-4 h-4" /> {t.nav.reserve}
+            </a>
+          </div>
         </div>
       </header>
 
@@ -124,34 +198,32 @@ function Home() {
         <div className="relative max-w-7xl mx-auto px-6 py-24 grid lg:grid-cols-2 gap-12 items-center w-full">
           <div className="text-cream space-y-8">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-gold/30 text-gold text-xs uppercase tracking-[0.2em]">
-              <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" /> Urretxu · Gipuzkoa
+              <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" /> {t.hero.badge}
             </div>
             <h1 className="text-5xl md:text-7xl font-bold leading-[0.95]">
-              Hanburgesak,<br />
-              <span className="italic text-gold">pintxoak</span> &<br />
-              giro ona.
+              {t.hero.title1}<br />
+              <span className="italic text-gold">{t.hero.title2}</span><br />
+              {t.hero.title3}
             </h1>
-            <p className="text-lg text-cream/70 max-w-md leading-relaxed">
-              Bar Aldapa. Urretxuko bihotzean dagoen taberna, hanburgesa bereziak, bokata epelak eta pintxo gozoekin.
-            </p>
+            <p className="text-lg text-cream/70 max-w-md leading-relaxed">{t.hero.desc}</p>
 
             <div className="flex flex-wrap items-center gap-6 pt-2">
               <div className="flex items-center gap-2">
                 <div className="flex">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className={`w-5 h-5 ${i < 5 ? "fill-gold text-gold" : "fill-gold/40 text-gold/40"}`} />
+                    <Star key={i} className="w-5 h-5 fill-gold text-gold" />
                   ))}
                 </div>
                 <span className="font-display text-2xl">5,0</span>
-                <span className="text-cream/60 text-sm">· 178 iritzi</span>
+                <span className="text-cream/60 text-sm">· 178 {t.hero.reviews}</span>
               </div>
               <div className="h-6 w-px bg-cream/20" />
-              <span className="text-cream/70 text-sm">10 — 20 € pertsonako</span>
+              <span className="text-cream/70 text-sm">{t.hero.perPerson}</span>
             </div>
 
             <div className="flex flex-wrap gap-3 pt-4">
               <a href="#menua" className="px-7 py-3.5 rounded-full bg-ember text-primary-foreground font-medium hover:scale-105 transition shadow-[var(--shadow-warm)]">
-                Ikusi menua
+                {t.hero.seeMenu}
               </a>
               <a href="tel:+34943252592" className="px-7 py-3.5 rounded-full border border-cream/30 text-cream font-medium hover:bg-cream/10 transition inline-flex items-center gap-2">
                 <Phone className="w-4 h-4" /> 943 25 25 92
@@ -159,21 +231,20 @@ function Home() {
             </div>
           </div>
 
-          {/* floating info card */}
           <div className="hidden lg:block relative">
             <div className="absolute -inset-6 bg-[image:var(--gradient-warm)] opacity-20 blur-3xl rounded-full" />
             <div className="relative bg-cream/5 backdrop-blur-xl border border-cream/10 rounded-3xl p-8 text-cream shadow-[var(--shadow-glow)]">
-              <p className="text-xs uppercase tracking-[0.2em] text-gold mb-4">Gaurko egoera</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-gold mb-4">{t.hero.status}</p>
               <div className="flex items-center gap-3 mb-6">
                 <span className="w-3 h-3 rounded-full bg-destructive" />
-                <span className="font-display text-2xl">Itxita dago</span>
+                <span className="font-display text-2xl">{t.hero.closed}</span>
               </div>
-              <p className="text-sm text-cream/70 mb-6">Irekitze-ordua gaur · <span className="text-cream">17:00</span></p>
+              <p className="text-sm text-cream/70 mb-6">{t.hero.opening} · <span className="text-cream">17:00</span></p>
               <div className="h-px bg-cream/10 my-6" />
               <div className="grid grid-cols-3 gap-4 text-center">
-                <ServiceBadge icon={Utensils} label="Bertan jan" />
-                <ServiceBadge icon={ShoppingBag} label="Eramateko" />
-                <ServiceBadge icon={Bike} label="Etxez etxe" />
+                <ServiceBadge icon={Utensils} label={t.hero.eatIn} />
+                <ServiceBadge icon={ShoppingBag} label={t.hero.takeAway} />
+                <ServiceBadge icon={Bike} label={t.hero.delivery} />
               </div>
             </div>
           </div>
@@ -185,12 +256,10 @@ function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
             <div>
-              <p className="text-xs uppercase tracking-[0.25em] text-ember mb-3">Aipagarriak</p>
-              <h2 className="text-5xl md:text-6xl font-bold text-charcoal">Plater izarrak</h2>
+              <p className="text-xs uppercase tracking-[0.25em] text-ember mb-3">{t.featured.kicker}</p>
+              <h2 className="text-5xl md:text-6xl font-bold text-charcoal">{t.featured.title}</h2>
             </div>
-            <p className="max-w-md text-muted-foreground">
-              Bezeroek gehien eskatzen dituztenak. Egunero osagai freskoekin prestatuak.
-            </p>
+            <p className="max-w-md text-muted-foreground">{t.featured.desc}</p>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
@@ -198,9 +267,9 @@ function Home() {
               <article key={item.name} className="group relative bg-card rounded-2xl overflow-hidden border border-border hover:shadow-[var(--shadow-warm)] hover:-translate-y-1 transition-all duration-500">
                 <div className="aspect-[4/5] overflow-hidden bg-muted relative">
                   <img src={item.img} alt={item.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                  {item.tag && (
+                  {item.tagged && (
                     <span className="absolute top-4 left-4 px-3 py-1 bg-cream/95 backdrop-blur text-charcoal text-[10px] font-bold tracking-widest uppercase rounded-full">
-                      {item.tag}
+                      {t.featured.tag}
                     </span>
                   )}
                 </div>
@@ -216,29 +285,27 @@ function Home() {
           </div>
 
           <div className="text-center mb-16">
-            <p className="text-xs uppercase tracking-[0.25em] text-ember mb-3">Karta osoa</p>
-            <h2 className="text-5xl md:text-6xl font-bold text-charcoal">Menu osoa</h2>
-            <p className="mt-4 text-muted-foreground max-w-xl mx-auto">
-              Hanburgesak, bokatak, raziak, pintxoak eta postreak. Aukera zabala denentzat.
-            </p>
+            <p className="text-xs uppercase tracking-[0.25em] text-ember mb-3">{t.menu.kicker}</p>
+            <h2 className="text-5xl md:text-6xl font-bold text-charcoal">{t.menu.title}</h2>
+            <p className="mt-4 text-muted-foreground max-w-xl mx-auto">{t.menu.desc}</p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-x-16 gap-y-14">
-            {menuSections.map((section) => (
+            {t.menuSections.map((section, idx) => (
               <div key={section.title}>
                 <div className="flex items-baseline gap-3 mb-6 pb-3 border-b border-ember/30">
                   <h3 className="font-display text-3xl text-charcoal font-bold">{section.title}</h3>
                   <span className="text-sm text-muted-foreground italic">{section.subtitle}</span>
                 </div>
                 <ul className="space-y-5">
-                  {section.items.map((item) => (
+                  {menuItems[idx].map((item) => (
                     <li key={item.name} className="flex gap-4">
                       <div className="flex-1">
                         <div className="flex items-baseline gap-2 mb-1">
                           <h4 className="font-semibold text-charcoal">{item.name}</h4>
-                          {item.tag && (
+                          {item.tagged && (
                             <span className="px-2 py-0.5 bg-gold/20 text-ember text-[9px] font-bold tracking-widest uppercase rounded-full">
-                              {item.tag}
+                              {t.featured.tag}
                             </span>
                           )}
                         </div>
@@ -252,9 +319,7 @@ function Home() {
             ))}
           </div>
 
-          <p className="text-center text-xs text-muted-foreground mt-16 italic">
-            * Prezioak orientagarriak dira. Karta sasoiaren arabera alda daiteke.
-          </p>
+          <p className="text-center text-xs text-muted-foreground mt-16 italic">{t.menu.disclaimer}</p>
         </div>
       </section>
 
@@ -263,22 +328,20 @@ function Home() {
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-ember/20 rounded-full blur-[120px]" />
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center relative">
           <div className="relative">
-            <img src={taberna} alt="Bar Aldapa interior" loading="lazy" width={1600} height={1000} className="rounded-2xl shadow-2xl" />
+            <img src={taberna} alt="Bar Aldapa" loading="lazy" width={1600} height={1000} className="rounded-2xl shadow-2xl" />
             <div className="absolute -bottom-8 -right-8 hidden md:block bg-ember text-primary-foreground rounded-2xl p-6 shadow-[var(--shadow-warm)]">
               <p className="font-display text-4xl font-bold">45+</p>
-              <p className="text-xs uppercase tracking-wider opacity-80">pertsonek gomendatzen dute</p>
+              <p className="text-xs uppercase tracking-wider opacity-80">{t.about.recommend}</p>
             </div>
           </div>
           <div className="space-y-6">
-            <p className="text-xs uppercase tracking-[0.25em] text-gold">Honi buruz</p>
-            <h2 className="text-5xl font-bold leading-tight">Auzoko taberna, eskuz eginiko sukaldea.</h2>
-            <p className="text-cream/70 leading-relaxed text-lg">
-              Areizaga kalean, Urretxuko erdigunean. Hanburgesa berezietan, bokata epeletan eta pintxo gozoetan espezializatuta gauden taberna familiarra gara. Karta laburra, kalitatezko osagaiak eta tratu hurbila.
-            </p>
+            <p className="text-xs uppercase tracking-[0.25em] text-gold">{t.about.kicker}</p>
+            <h2 className="text-5xl font-bold leading-tight">{t.about.title}</h2>
+            <p className="text-cream/70 leading-relaxed text-lg">{t.about.desc}</p>
             <div className="grid grid-cols-3 gap-6 pt-6">
-              <Stat value="4,4★" label="178 iritzi" />
-              <Stat value="10-20€" label="Pertsonako" />
-              <Stat value="3 zerb." label="Eskuragarri" />
+              <Stat value="5,0★" label={t.about.stat1} />
+              <Stat value="10-20€" label={t.about.stat2} />
+              <Stat value="3 zerb." label={t.about.stat3} />
             </div>
           </div>
         </div>
@@ -288,8 +351,8 @@ function Home() {
       <section id="iritziak" className="py-28 px-6 bg-cream">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <p className="text-xs uppercase tracking-[0.25em] text-ember mb-3">Iritziak</p>
-            <h2 className="text-5xl md:text-6xl font-bold text-charcoal">Bezeroek diotena</h2>
+            <p className="text-xs uppercase tracking-[0.25em] text-ember mb-3">{t.reviewsSec.kicker}</p>
+            <h2 className="text-5xl md:text-6xl font-bold text-charcoal">{t.reviewsSec.title}</h2>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
@@ -321,13 +384,13 @@ function Home() {
       <section id="kontaktua" className="py-28 px-6 bg-background">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12">
           <div>
-            <p className="text-xs uppercase tracking-[0.25em] text-ember mb-3">Kontaktua</p>
-            <h2 className="text-5xl font-bold text-charcoal mb-8">Etorri, gose izan zaitez.</h2>
+            <p className="text-xs uppercase tracking-[0.25em] text-ember mb-3">{t.contact.kicker}</p>
+            <h2 className="text-5xl font-bold text-charcoal mb-8">{t.contact.title}</h2>
 
             <div className="space-y-6">
-              <InfoRow icon={MapPin} title="Helbidea" lines={["Areizaga Kalea, 3", "20700 Urretxu, Gipuzkoa"]} />
-              <InfoRow icon={Phone} title="Telefonoa" lines={["943 25 25 92"]} href="tel:+34943252592" />
-              <InfoRow icon={Clock} title="Ordutegia" lines={["Ast: itxita", "Ar-Ig: 17:00 — 23:00"]} />
+              <InfoRow icon={MapPin} title={t.contact.address} lines={["Areizaga Kalea, 3", "20700 Urretxu, Gipuzkoa"]} />
+              <InfoRow icon={Phone} title={t.contact.phone} lines={["943 25 25 92"]} href="tel:+34943252592" />
+              <InfoRow icon={Clock} title={t.contact.schedule} lines={[...t.contact.schedShort]} />
             </div>
 
             <a
@@ -336,17 +399,17 @@ function Home() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 mt-10 px-7 py-3.5 rounded-full bg-charcoal text-cream hover:bg-ember transition"
             >
-              <MapPin className="w-4 h-4" /> Ikusi Google Maps-en
+              <MapPin className="w-4 h-4" /> {t.contact.maps}
             </a>
           </div>
 
           <div className="bg-charcoal text-cream rounded-3xl p-8 md:p-10">
-            <h3 className="font-display text-2xl mb-6 text-gold">Ordutegi osoa</h3>
+            <h3 className="font-display text-2xl mb-6 text-gold">{t.contact.fullSchedule}</h3>
             <ul className="divide-y divide-cream/10">
-              {schedule.map(([day, time]) => (
+              {t.schedule.map(([day, time]) => (
                 <li key={day} className="flex justify-between py-3.5">
                   <span className="text-cream/90">{day}</span>
-                  <span className={time === "Itxita" ? "text-destructive" : "text-cream"}>{time}</span>
+                  <span className={time === t.closedLabel ? "text-destructive" : "text-cream"}>{time}</span>
                 </li>
               ))}
             </ul>
@@ -360,6 +423,26 @@ function Home() {
           <p>Areizaga Kalea, 3 · 943 25 25 92</p>
         </div>
       </footer>
+    </div>
+  );
+}
+
+function LangToggle({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
+  return (
+    <div role="group" aria-label="Language" className="inline-flex items-center p-1 rounded-full bg-cream/10 border border-cream/15 text-xs font-semibold">
+      {(["eu", "es"] as const).map((l) => (
+        <button
+          key={l}
+          type="button"
+          onClick={() => setLang(l)}
+          aria-pressed={lang === l}
+          className={`px-3 py-1.5 rounded-full transition ${
+            lang === l ? "bg-ember text-primary-foreground shadow-[var(--shadow-warm)]" : "text-cream/70 hover:text-cream"
+          }`}
+        >
+          {l.toUpperCase()}
+        </button>
+      ))}
     </div>
   );
 }
