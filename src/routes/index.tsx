@@ -209,6 +209,8 @@ function Home() {
   const [lang, setLang] = useState<Lang>("eu");
   const t = translations[lang];
   const reviews = reviewsData[lang];
+  const featured = featuredData[lang];
+  const menuItems = menuItemsData[lang];
 
   return (
     <div className="min-h-screen bg-background text-foreground">
