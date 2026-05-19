@@ -139,10 +139,10 @@ function Home() {
               <div className="flex items-center gap-2">
                 <div className="flex">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className={`w-5 h-5 ${i < 4 ? "fill-gold text-gold" : "fill-gold/40 text-gold/40"}`} />
+                    <Star key={i} className={`w-5 h-5 ${i < 5 ? "fill-gold text-gold" : "fill-gold/40 text-gold/40"}`} />
                   ))}
                 </div>
-                <span className="font-display text-2xl">4,4</span>
+                <span className="font-display text-2xl">5,0</span>
                 <span className="text-cream/60 text-sm">· 178 iritzi</span>
               </div>
               <div className="h-6 w-px bg-cream/20" />
