@@ -104,48 +104,93 @@ const translations = {
   },
 } as const;
 
-const featured = [
-  { name: "Hamburguesa Wagyu", desc: "Carne wagyu, queso fundido, lechuga fresca, brioche artesano.", price: "14,50 €", img: heroBurger, tagged: true },
-  { name: "Hamburguesa Diabla", desc: "Carne de vacuno, jalapeños, salsa diabla picante, cheddar fundido.", price: "13,50 €", img: thaiBurger, tagged: true },
-  { name: "Patatas Alioli", desc: "Patatas crujientes con salsa alioli casera.", price: "6,50 €", img: patatasAlioli, tagged: true },
-  { name: "Bocata Ibérico", desc: "Jamón ibérico, pan crujiente, aceite de oliva virgen extra.", price: "9,80 €", img: bocata },
-];
+const featuredData = {
+  eu: [
+    { name: "Wagyu Hanburgesa", desc: "Wagyu haragia, gazta urtua, letxuga freskoa, brioche artisaua.", price: "14,50 €", img: heroBurger, tagged: true },
+    { name: "Hanburgesa Diabla", desc: "Behi haragia, jalapeñoak, diabla saltsa min-mina, cheddar urtua.", price: "13,50 €", img: thaiBurger, tagged: true },
+    { name: "Patata Alioliak", desc: "Patata krakatsuak etxeko alioli saltsarekin.", price: "6,50 €", img: patatasAlioli, tagged: true },
+    { name: "Bokata Iberikoa", desc: "Urdaiazpiko iberikoa, ogi krakatsua, oliba olio birjina estra.", price: "9,80 €", img: bocata },
+  ],
+  es: [
+    { name: "Hamburguesa Wagyu", desc: "Carne wagyu, queso fundido, lechuga fresca, brioche artesano.", price: "14,50 €", img: heroBurger, tagged: true },
+    { name: "Hamburguesa Diabla", desc: "Carne de vacuno, jalapeños, salsa diabla picante, cheddar fundido.", price: "13,50 €", img: thaiBurger, tagged: true },
+    { name: "Patatas Alioli", desc: "Patatas crujientes con salsa alioli casera.", price: "6,50 €", img: patatasAlioli, tagged: true },
+    { name: "Bocata Ibérico", desc: "Jamón ibérico, pan crujiente, aceite de oliva virgen extra.", price: "9,80 €", img: bocata },
+  ],
+};
 
-const menuItems = [
-  [
-    { name: "Hamburguesa Wagyu", desc: "Wagyu, queso fundido, lechuga, brioche artesano.", price: "14,50 €", tagged: true },
-    { name: "Hamburguesa Diabla", desc: "Vacuno, jalapeños, salsa diabla, cheddar.", price: "13,50 €", tagged: true },
-    { name: "Thai Burger", desc: "Salsa thai, verdura crujiente, pan de sésamo.", price: "13,00 €" },
-    { name: "Hamburguesa Aldapa", desc: "La especial de la casa: bacon, cebolla caramelizada, queso azul.", price: "12,50 €" },
-    { name: "Hamburguesa BBQ", desc: "Salsa barbacoa, bacon crujiente, cheddar y cebolla frita.", price: "12,00 €" },
-    { name: "Hamburguesa Clásica", desc: "Vacuno, tomate, lechuga, cebolla y queso.", price: "10,50 €" },
-    { name: "Hamburguesa Vegetal", desc: "Hamburguesa vegetal, pimientos asados, rúcula y alioli.", price: "10,00 €" },
-    { name: "Hamburguesa Pollo Crispy", desc: "Pollo crujiente, lechuga, tomate y salsa césar.", price: "11,00 €" },
+const menuItemsData = {
+  eu: [
+    [
+      { name: "Wagyu Hanburgesa", desc: "Wagyu, gazta urtua, letxuga, brioche artisaua.", price: "14,50 €", tagged: true },
+      { name: "Hanburgesa Diabla", desc: "Behikia, jalapeñoak, diabla saltsa, cheddar.", price: "13,50 €", tagged: true },
+      { name: "Thai Hanburgesa", desc: "Thai saltsa, barazki krakatsuak, sesamo ogia.", price: "13,00 €" },
+      { name: "Aldapa Hanburgesa", desc: "Etxeko berezia: hirugihar, tipula karamelatua, gazta urdina.", price: "12,50 €" },
+      { name: "BBQ Hanburgesa", desc: "Barbakoa saltsa, hirugihar krakatsua, cheddar eta tipula frijitua.", price: "12,00 €" },
+      { name: "Hanburgesa Klasikoa", desc: "Behikia, tomatea, letxuga, tipula eta gazta.", price: "10,50 €" },
+      { name: "Hanburgesa Begetala", desc: "Hanburgesa begetala, piper erreak, errukula eta aliolia.", price: "10,00 €" },
+      { name: "Oilasko Krispy Hanburgesa", desc: "Oilasko krakatsua, letxuga, tomatea eta cesar saltsa.", price: "11,00 €" },
+    ],
+    [
+      { name: "ALDAPA B1", desc: "Pulled pork, tipula krakatsua, hirugihar krakatsua, cheddar gazta.", price: "8,50 €" },
+      { name: "ALDAPA B2", desc: "Txipiroiak eta aliolia.", price: "8,00 €" },
+      { name: "ALDAPA B3", desc: "Solomo iberikoa plantxan, brie gazta, tipula karamelatua.", price: "8,00 €" },
+      { name: "ALDAPA B4", desc: "Bularkia, roquefort saltsa, tipula karamelatua.", price: "7,50 €" },
+      { name: "ALDAPA B5", desc: "Begetala: letxuga, tomatea, indioilar erregosia, arrautza gogorra, ahuakatea eta maionesa.", price: "7,50 €" },
+      { name: "ALDAPA B6", desc: "Bularki enpanatua, piper berdea, boilur gazta, tipula.", price: "7,50 €" },
+      { name: "ALDAPA B7", desc: "Solomoa, Idiazabal gazta, piper gorri karamelatua.", price: "8,50 €" },
+    ],
+    [
+      { name: "Etxeko patatak", desc: "Bravas edo alioli.", price: "7,50 €" },
+      { name: "Txipiroiak", desc: "Txipiroiak alioliarekin.", price: "10,00 €" },
+      { name: "Oilasko hegoak", desc: "Oilasko hegoak barbakoa saltsarekin.", price: "7,50 €" },
+      { name: "Kroketa iberikoak", desc: "", price: "7,50 €" },
+      { name: "Tequeñoak", desc: "Tequeñoak saltsarekin.", price: "8,50 €" },
+      { name: "Kentucky oilaskoa", desc: "Kentucky oilaskoa bi saltsekin.", price: "8,50 €" },
+      { name: "Urdaiazpiko iberikoa", desc: "", price: "18,00 €" },
+      { name: "Olagarroa", desc: "Asteburuetan soilik.", price: "18,00 €" },
+    ],
+    [
+      { name: "Gazta tarta", desc: "", price: "6,50 €" },
+      { name: "Coulanta", desc: "", price: "5,50 €" },
+    ],
   ],
-  [
-    { name: "ALDAPA B1", desc: "Pulled pork, cebolla crujiente, bacon crujiente, queso cheddar.", price: "8,50 €" },
-    { name: "ALDAPA B2", desc: "Calamares y alioli.", price: "8,00 €" },
-    { name: "ALDAPA B3", desc: "Lomo ibérico a la plancha, queso brie, cebolla caramelizada.", price: "8,00 €" },
-    { name: "ALDAPA B4", desc: "Pechuga, salsa roquefort, cebolla caramelizada.", price: "7,50 €" },
-    { name: "ALDAPA B5", desc: "Vegetal: lechuga, tomate, pavo braseado, huevo duro, aguacate y mayonesa.", price: "7,50 €" },
-    { name: "ALDAPA B6", desc: "Pechuga empanada, pimiento verde, queso trufado, cebolla.", price: "7,50 €" },
-    { name: "ALDAPA B7", desc: "Lomo, queso Idiazábal, pimiento rojo caramelizado.", price: "8,50 €" },
+  es: [
+    [
+      { name: "Hamburguesa Wagyu", desc: "Wagyu, queso fundido, lechuga, brioche artesano.", price: "14,50 €", tagged: true },
+      { name: "Hamburguesa Diabla", desc: "Vacuno, jalapeños, salsa diabla, cheddar.", price: "13,50 €", tagged: true },
+      { name: "Thai Burger", desc: "Salsa thai, verdura crujiente, pan de sésamo.", price: "13,00 €" },
+      { name: "Hamburguesa Aldapa", desc: "La especial de la casa: bacon, cebolla caramelizada, queso azul.", price: "12,50 €" },
+      { name: "Hamburguesa BBQ", desc: "Salsa barbacoa, bacon crujiente, cheddar y cebolla frita.", price: "12,00 €" },
+      { name: "Hamburguesa Clásica", desc: "Vacuno, tomate, lechuga, cebolla y queso.", price: "10,50 €" },
+      { name: "Hamburguesa Vegetal", desc: "Hamburguesa vegetal, pimientos asados, rúcula y alioli.", price: "10,00 €" },
+      { name: "Hamburguesa Pollo Crispy", desc: "Pollo crujiente, lechuga, tomate y salsa césar.", price: "11,00 €" },
+    ],
+    [
+      { name: "ALDAPA B1", desc: "Pulled pork, cebolla crujiente, bacon crujiente, queso cheddar.", price: "8,50 €" },
+      { name: "ALDAPA B2", desc: "Calamares y alioli.", price: "8,00 €" },
+      { name: "ALDAPA B3", desc: "Lomo ibérico a la plancha, queso brie, cebolla caramelizada.", price: "8,00 €" },
+      { name: "ALDAPA B4", desc: "Pechuga, salsa roquefort, cebolla caramelizada.", price: "7,50 €" },
+      { name: "ALDAPA B5", desc: "Vegetal: lechuga, tomate, pavo braseado, huevo duro, aguacate y mayonesa.", price: "7,50 €" },
+      { name: "ALDAPA B6", desc: "Pechuga empanada, pimiento verde, queso trufado, cebolla.", price: "7,50 €" },
+      { name: "ALDAPA B7", desc: "Lomo, queso Idiazábal, pimiento rojo caramelizado.", price: "8,50 €" },
+    ],
+    [
+      { name: "Patatas caseras", desc: "Bravas o alioli.", price: "7,50 €" },
+      { name: "Calamares", desc: "Calamares con alioli.", price: "10,00 €" },
+      { name: "Alitas de pollo", desc: "Alitas de pollo con salsa barbacoa.", price: "7,50 €" },
+      { name: "Croquetas ibéricas", desc: "", price: "7,50 €" },
+      { name: "Tequeños", desc: "Tequeños con salsa.", price: "8,50 €" },
+      { name: "Pollo Kentucky", desc: "Pollo Kentucky con dos salsas.", price: "8,50 €" },
+      { name: "Jamón ibérico", desc: "", price: "18,00 €" },
+      { name: "Pulpo", desc: "Solo fines de semana.", price: "18,00 €" },
+    ],
+    [
+      { name: "Tarta de queso", desc: "", price: "6,50 €" },
+      { name: "Coulant", desc: "", price: "5,50 €" },
+    ],
   ],
-  [
-    { name: "Patatas caseras", desc: "Bravas o alioli.", price: "7,50 €" },
-    { name: "Calamares", desc: "Calamares con alioli.", price: "10,00 €" },
-    { name: "Alitas de pollo", desc: "Alitas de pollo con salsa barbacoa.", price: "7,50 €" },
-    { name: "Croquetas ibéricas", desc: "", price: "7,50 €" },
-    { name: "Tequeños", desc: "Tequeños con salsa.", price: "8,50 €" },
-    { name: "Pollo Kentucky", desc: "Pollo Kentucky con dos salsas.", price: "8,50 €" },
-    { name: "Jamón ibérico", desc: "", price: "18,00 €" },
-    { name: "Pulpo", desc: "Solo fines de semana.", price: "18,00 €" },
-  ],
-  [
-    { name: "Tarta de queso", desc: "", price: "6,50 €" },
-    { name: "Coulant", desc: "", price: "5,50 €" },
-  ],
-];
+};
 
 const reviewsData = {
   eu: [
