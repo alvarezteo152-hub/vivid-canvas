@@ -436,14 +436,12 @@ function Home() {
               <InfoRow icon={Clock} title={t.contact.schedule} lines={[...t.contact.schedShort]} />
             </div>
 
-            <a
-              href="https://www.google.com/maps/search/?api=1&query=Bar+Aldapa+Urretxu&query_place_id=ChIJLwBAtdMt1QIR53nyPBeHXlw"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 mt-10 px-7 py-3.5 rounded-full bg-charcoal text-cream hover:bg-ember transition"
+            <button
+              onClick={() => window.open('https://www.google.com/maps/search/?api=1&query=Bar+Aldapa+Urretxu&query_place_id=ChIJLwBAtdMt1QIR53nyPBeHXlw', '_blank', 'noopener,noreferrer')}
+              className="inline-flex items-center gap-2 mt-10 px-7 py-3.5 rounded-full bg-charcoal text-cream hover:bg-ember transition cursor-pointer"
             >
               <MapPin className="w-4 h-4" /> {t.contact.maps}
-            </a>
+            </button>
           </div>
 
           <div className="bg-charcoal text-cream rounded-3xl p-8 md:p-10">
