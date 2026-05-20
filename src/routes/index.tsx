@@ -437,7 +437,7 @@ function Home() {
             </div>
 
             <a
-              href="https://maps.google.com/?q=Bar%20Aldapa%2C%20Areizaga%20Kalea%203%2C%2020700%20Urretxu%2C%20Gipuzkoa"
+              href="https://maps.google.com/?q=Bar+Aldapa+Urretxu"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 mt-10 px-7 py-3.5 rounded-full bg-charcoal text-cream hover:bg-ember transition cursor-pointer"
