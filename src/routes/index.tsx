@@ -93,7 +93,7 @@ const translations = {
     dayKeywords: [
       ["domingo", 0], ["lunes", 1], ["martes", 2],
       ["miércoles", 3], ["jueves", 4], ["viernes", 5], ["sábado", 6],
-    ] as [string, number][],
+    ],
     featured: { kicker: "Destacados", title: "Platos estrella", desc: "Los más pedidos por nuestros clientes. Preparados a diario con ingredientes frescos.", tag: "Popular" },
     menu: { kicker: "Carta completa", title: "Menú completo", desc: "Hamburguesas, bocadillos, raciones y postres. Amplia variedad para todos.", disclaimer: "* Precios orientativos. La carta puede variar según la temporada." },
     about: { kicker: "Sobre nosotros", title: "Taberna de barrio, cocina artesana.", desc: "En la calle Areizaga, en el centro de Urretxu. Somos una taberna familiar especializada en hamburguesas especiales, bocatas calientes y pintxos deliciosos. Carta corta, ingredientes de calidad y trato cercano.", stat1: "178 opiniones", stat2: "Por persona", stat3: "Disponibles", recommend: "personas lo recomiendan" },
