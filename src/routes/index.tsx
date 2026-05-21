@@ -351,7 +351,7 @@ function Home() {
             </div>
 
             <div className="flex flex-wrap gap-3 pt-4">
-              <a href="#menua" className="px-7 py-3.5 rounded-full bg-ember text-primary-foreground font-medium hover:scale-105 transition shadow-[var(--shadow-warm)]">
+              <a href="#menu" className="px-7 py-3.5 rounded-full bg-ember text-primary-foreground font-medium hover:scale-105 transition shadow-[var(--shadow-warm)]">
                 {t.hero.seeMenu}
               </a>
               <a href="tel:+34943252592" className="px-7 py-3.5 rounded-full border border-cream/30 text-cream font-medium hover:bg-cream/10 transition inline-flex items-center gap-2">
