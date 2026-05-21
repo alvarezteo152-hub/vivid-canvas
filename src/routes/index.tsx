@@ -35,11 +35,19 @@ const translations = {
       seeMenu: "Ikusi menua",
       status: "Gaurko egoera",
       closed: "Itxita dago",
+      open: "Irekita dago",
       opening: "Irekitze-ordua gaur",
+      closesAt: "Itxiera gaur",
+      nextOpen: "Hurrengo irekiera",
       eatIn: "Bertan jan",
       takeAway: "Eramateko",
       delivery: "Etxez etxe",
     },
+    dayNames: ["Igandea", "Astelehena", "Asteartea", "Asteazkena", "Osteguna", "Ostirala", "Larunbata"],
+    dayKeywords: [
+      ["igandea", 0], ["astelehena", 1], ["asteartea", 2],
+      ["asteazkena", 3], ["osteguna", 4], ["ostirala", 5], ["larunbata", 6],
+    ],
     featured: { kicker: "Aipagarriak", title: "Plater izarrak", desc: "Bezeroek gehien eskatzen dituztenak. Egunero osagai freskoekin prestatuak.", tag: "Ezaguna" },
     menu: { kicker: "Karta osoa", title: "Menu osoa", desc: "Hanburgesak, bokatak, raziak eta postreak. Aukera zabala denentzat.", disclaimer: "* Prezioak orientagarriak dira. Karta sasoiaren arabera alda daiteke." },
     about: { kicker: "Honi buruz", title: "Auzoko taberna, eskuz eginiko sukaldea.", desc: "Areizaga kalean, Urretxuko erdigunean. Hanburgesa berezietan, bokata epeletan eta pintxo gozoetan espezializatuta gauden taberna familiarra gara. Karta laburra, kalitatezko osagaiak eta tratu hurbila.", stat1: "178 iritzi", stat2: "Pertsonako", stat3: "Eskuragarri", recommend: "pertsonek gomendatzen dute" },
@@ -73,11 +81,19 @@ const translations = {
       seeMenu: "Ver menú",
       status: "Estado de hoy",
       closed: "Cerrado",
+      open: "Abierto",
       opening: "Apertura hoy",
+      closesAt: "Cierra hoy",
+      nextOpen: "Próxima apertura",
       eatIn: "Comer aquí",
       takeAway: "Para llevar",
       delivery: "A domicilio",
     },
+    dayNames: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+    dayKeywords: [
+      ["domingo", 0], ["lunes", 1], ["martes", 2],
+      ["miércoles", 3], ["jueves", 4], ["viernes", 5], ["sábado", 6],
+    ],
     featured: { kicker: "Destacados", title: "Platos estrella", desc: "Los más pedidos por nuestros clientes. Preparados a diario con ingredientes frescos.", tag: "Popular" },
     menu: { kicker: "Carta completa", title: "Menú completo", desc: "Hamburguesas, bocadillos, raciones y postres. Amplia variedad para todos.", disclaimer: "* Precios orientativos. La carta puede variar según la temporada." },
     about: { kicker: "Sobre nosotros", title: "Taberna de barrio, cocina artesana.", desc: "En la calle Areizaga, en el centro de Urretxu. Somos una taberna familiar especializada en hamburguesas especiales, bocatas calientes y pintxos deliciosos. Carta corta, ingredientes de calidad y trato cercano.", stat1: "178 opiniones", stat2: "Por persona", stat3: "Disponibles", recommend: "personas lo recomiendan" },
@@ -201,12 +217,79 @@ const reviewsData = {
   ],
 };
 
+type OpenStatus =
+  | { open: true; closeTime: string }
+  | { open: false; sameDay: boolean; nextDay: number; nextTime: string };
+
+function toMin(hhmm: string) {
+  const [h, m] = hhmm.split(":").map((n) => parseInt(n, 10));
+  return h * 60 + (m || 0);
+}
+function fmt(min: number) {
+  const m = ((min % (24 * 60)) + 24 * 60) % (24 * 60);
+  return `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
+}
+function buildSchedule(
+  schedule: readonly (readonly [string, string])[],
+  closedLabel: string,
+  dayKeywords: readonly (readonly [string, number])[],
+) {
+  const map: Record<number, { open: number; close: number }> = {};
+  for (const [dayText, time] of schedule) {
+    if (time === closedLabel) continue;
+    const parts = time.split(/[—–-]/).map((s) => s.trim());
+    if (parts.length < 2) continue;
+    const open = toMin(parts[0]);
+    let close = toMin(parts[1]);
+    if (close <= open) close += 24 * 60;
+    const lower = dayText.toLowerCase();
+    for (const [kw, idx] of dayKeywords) {
+      if (lower.includes(kw)) map[idx] = { open, close };
+    }
+  }
+  return map;
+}
+function computeStatus(
+  now: Date,
+  schedule: readonly (readonly [string, string])[],
+  closedLabel: string,
+  dayKeywords: readonly (readonly [string, number])[],
+): OpenStatus {
+  const map = buildSchedule(schedule, closedLabel, dayKeywords);
+  const day = now.getDay();
+  const mins = now.getHours() * 60 + now.getMinutes();
+  const today = map[day];
+  if (today && mins >= today.open && mins < today.close) {
+    return { open: true, closeTime: fmt(today.close) };
+  }
+  const yest = map[(day + 6) % 7];
+  if (yest && yest.close > 24 * 60 && mins < yest.close - 24 * 60) {
+    return { open: true, closeTime: fmt(yest.close - 24 * 60) };
+  }
+  for (let i = 0; i < 7; i++) {
+    const d = (day + i) % 7;
+    const s = map[d];
+    if (!s) continue;
+    if (i === 0 && mins >= s.open) continue;
+    return { open: false, sameDay: i === 0, nextDay: d, nextTime: fmt(s.open) };
+  }
+  return { open: false, sameDay: false, nextDay: day, nextTime: "" };
+}
+
 function Home() {
   const [lang, setLang] = useState<Lang>("eu");
   const t = translations[lang];
   const reviews = reviewsData[lang];
   const featured = featuredData[lang];
   const menuItems = menuItemsData[lang];
+
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 30_000);
+    return () => clearInterval(id);
+  }, []);
+  const status = computeStatus(now, t.schedule, t.closedLabel, t.dayKeywords);
+
 
   const navItems = [
     { id: "menu", label: "Menua" },
@@ -365,10 +448,18 @@ function Home() {
             <div className="relative bg-cream/5 backdrop-blur-xl border border-cream/10 rounded-3xl p-8 text-cream shadow-[var(--shadow-glow)]">
               <p className="text-xs uppercase tracking-[0.2em] text-gold mb-4">{t.hero.status}</p>
               <div className="flex items-center gap-3 mb-6">
-                <span className="w-3 h-3 rounded-full bg-destructive" />
-                <span className="font-display text-2xl">{t.hero.closed}</span>
+                <span className={`w-3 h-3 rounded-full ${status.open ? "bg-emerald-400" : "bg-destructive"}`} />
+                <span className="font-display text-2xl">{status.open ? t.hero.open : t.hero.closed}</span>
               </div>
-              <p className="text-sm text-cream/70 mb-6">{t.hero.opening} · <span className="text-cream">17:00</span></p>
+              <p className="text-sm text-cream/70 mb-6">
+                {status.open ? (
+                  <>{t.hero.closesAt} · <span className="text-cream">{status.closeTime}</span></>
+                ) : status.sameDay ? (
+                  <>{t.hero.opening} · <span className="text-cream">{status.nextTime}</span></>
+                ) : (
+                  <>{t.hero.nextOpen} · <span className="text-cream">{t.dayNames[status.nextDay]} {status.nextTime}</span></>
+                )}
+              </p>
               <div className="h-px bg-cream/10 my-6" />
               <div className="grid grid-cols-3 gap-4 text-center">
                 <ServiceBadge icon={Utensils} label={t.hero.eatIn} />
