@@ -113,7 +113,6 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <DynamicIsland />
       <Outlet />
     </QueryClientProvider>
   );
