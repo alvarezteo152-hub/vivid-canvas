@@ -448,10 +448,18 @@ function Home() {
             <div className="relative bg-cream/5 backdrop-blur-xl border border-cream/10 rounded-3xl p-8 text-cream shadow-[var(--shadow-glow)]">
               <p className="text-xs uppercase tracking-[0.2em] text-gold mb-4">{t.hero.status}</p>
               <div className="flex items-center gap-3 mb-6">
-                <span className="w-3 h-3 rounded-full bg-destructive" />
-                <span className="font-display text-2xl">{t.hero.closed}</span>
+                <span className={`w-3 h-3 rounded-full ${status.open ? "bg-emerald-400" : "bg-destructive"}`} />
+                <span className="font-display text-2xl">{status.open ? t.hero.open : t.hero.closed}</span>
               </div>
-              <p className="text-sm text-cream/70 mb-6">{t.hero.opening} · <span className="text-cream">17:00</span></p>
+              <p className="text-sm text-cream/70 mb-6">
+                {status.open ? (
+                  <>{t.hero.closesAt} · <span className="text-cream">{status.closeTime}</span></>
+                ) : status.sameDay ? (
+                  <>{t.hero.opening} · <span className="text-cream">{status.nextTime}</span></>
+                ) : (
+                  <>{t.hero.nextOpen} · <span className="text-cream">{t.dayNames[status.nextDay]} {status.nextTime}</span></>
+                )}
+              </p>
               <div className="h-px bg-cream/10 my-6" />
               <div className="grid grid-cols-3 gap-4 text-center">
                 <ServiceBadge icon={Utensils} label={t.hero.eatIn} />
