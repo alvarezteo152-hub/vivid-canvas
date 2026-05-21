@@ -217,12 +217,79 @@ const reviewsData = {
   ],
 };
 
+type OpenStatus =
+  | { open: true; closeTime: string }
+  | { open: false; sameDay: boolean; nextDay: number; nextTime: string };
+
+function toMin(hhmm: string) {
+  const [h, m] = hhmm.split(":").map((n) => parseInt(n, 10));
+  return h * 60 + (m || 0);
+}
+function fmt(min: number) {
+  const m = ((min % (24 * 60)) + 24 * 60) % (24 * 60);
+  return `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
+}
+function buildSchedule(
+  schedule: readonly (readonly [string, string])[],
+  closedLabel: string,
+  dayKeywords: readonly (readonly [string, number])[],
+) {
+  const map: Record<number, { open: number; close: number }> = {};
+  for (const [dayText, time] of schedule) {
+    if (time === closedLabel) continue;
+    const parts = time.split(/[—–-]/).map((s) => s.trim());
+    if (parts.length < 2) continue;
+    const open = toMin(parts[0]);
+    let close = toMin(parts[1]);
+    if (close <= open) close += 24 * 60;
+    const lower = dayText.toLowerCase();
+    for (const [kw, idx] of dayKeywords) {
+      if (lower.includes(kw)) map[idx] = { open, close };
+    }
+  }
+  return map;
+}
+function computeStatus(
+  now: Date,
+  schedule: readonly (readonly [string, string])[],
+  closedLabel: string,
+  dayKeywords: readonly (readonly [string, number])[],
+): OpenStatus {
+  const map = buildSchedule(schedule, closedLabel, dayKeywords);
+  const day = now.getDay();
+  const mins = now.getHours() * 60 + now.getMinutes();
+  const today = map[day];
+  if (today && mins >= today.open && mins < today.close) {
+    return { open: true, closeTime: fmt(today.close) };
+  }
+  const yest = map[(day + 6) % 7];
+  if (yest && yest.close > 24 * 60 && mins < yest.close - 24 * 60) {
+    return { open: true, closeTime: fmt(yest.close - 24 * 60) };
+  }
+  for (let i = 0; i < 7; i++) {
+    const d = (day + i) % 7;
+    const s = map[d];
+    if (!s) continue;
+    if (i === 0 && mins >= s.open) continue;
+    return { open: false, sameDay: i === 0, nextDay: d, nextTime: fmt(s.open) };
+  }
+  return { open: false, sameDay: false, nextDay: day, nextTime: "" };
+}
+
 function Home() {
   const [lang, setLang] = useState<Lang>("eu");
   const t = translations[lang];
   const reviews = reviewsData[lang];
   const featured = featuredData[lang];
   const menuItems = menuItemsData[lang];
+
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 30_000);
+    return () => clearInterval(id);
+  }, []);
+  const status = computeStatus(now, t.schedule, t.closedLabel, t.dayKeywords);
+
 
   const navItems = [
     { id: "menu", label: "Menua" },
