@@ -208,28 +208,114 @@ function Home() {
   const featured = featuredData[lang];
   const menuItems = menuItemsData[lang];
 
+  const navItems = [
+    { id: "menu", label: "Menua" },
+    { id: "honi-buruz", label: "Honi buruz" },
+    { id: "kontaktua", label: "Kontaktua" },
+  ];
+  const [activeSection, setActiveSection] = useState<string>("menu");
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    const sections = navItems
+      .map((n) => document.getElementById(n.id))
+      .filter((el): el is HTMLElement => !!el);
+    if (sections.length === 0) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) setActiveSection(visible.target.id);
+      },
+      { rootMargin: "-40% 0px -50% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] },
+    );
+    sections.forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
+  }, []);
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      setActiveSection(id);
+      setMobileOpen(false);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground scroll-smooth">
       {/* Nav */}
       <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-charcoal/70 border-b border-white/5">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
-          <a href="#top" className="flex items-center gap-2 shrink-0">
+          <a href="#top" onClick={(e) => handleNavClick(e, "top")} className="flex items-center gap-2 shrink-0">
             <span className="w-9 h-9 rounded-full bg-[image:var(--gradient-warm)] grid place-items-center text-cream font-display font-bold">A</span>
             <span className="font-display text-xl text-cream tracking-tight">Bar Aldapa</span>
           </a>
-          <nav className="hidden md:flex items-center gap-8 text-sm text-cream/80">
-            <a href="#menua" className="hover:text-gold transition">{t.nav.menu}</a>
-            <a href="#honi-buruz" className="hover:text-gold transition">{t.nav.about}</a>
-            <a href="#iritziak" className="hover:text-gold transition">{t.nav.reviews}</a>
-            <a href="#kontaktua" className="hover:text-gold transition">{t.nav.contact}</a>
+          <nav className="hidden md:flex items-center gap-2 text-sm">
+            {navItems.map((item) => {
+              const isActive = activeSection === item.id;
+              return (
+                <a
+                  key={item.id}
+                  href={`#${item.id}`}
+                  onClick={(e) => handleNavClick(e, item.id)}
+                  className={`px-4 py-2 rounded-full transition-all duration-300 ${
+                    isActive
+                      ? "bg-ember text-primary-foreground shadow-[var(--shadow-warm)]"
+                      : "text-cream/80 hover:text-cream hover:bg-white/10"
+                  }`}
+                >
+                  {item.label}
+                </a>
+              );
+            })}
           </nav>
           <div className="flex items-center gap-3">
             <LangToggle lang={lang} setLang={setLang} />
             <a href="tel:+34943252592" className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-ember text-primary-foreground text-sm font-medium hover:opacity-90 transition shadow-[var(--shadow-warm)]">
               <Phone className="w-4 h-4" /> {t.nav.reserve}
             </a>
+            <button
+              type="button"
+              aria-label="Menu"
+              aria-expanded={mobileOpen}
+              onClick={() => setMobileOpen((v) => !v)}
+              className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-full text-cream hover:bg-white/10 transition"
+            >
+              <span className="sr-only">Toggle navigation</span>
+              <div className="flex flex-col gap-1.5">
+                <span className={`block h-0.5 w-5 bg-cream transition-transform ${mobileOpen ? "translate-y-2 rotate-45" : ""}`} />
+                <span className={`block h-0.5 w-5 bg-cream transition-opacity ${mobileOpen ? "opacity-0" : ""}`} />
+                <span className={`block h-0.5 w-5 bg-cream transition-transform ${mobileOpen ? "-translate-y-2 -rotate-45" : ""}`} />
+              </div>
+            </button>
           </div>
         </div>
+        {mobileOpen && (
+          <div className="md:hidden border-t border-white/5 bg-charcoal/90 backdrop-blur-md animate-fade-in">
+            <nav className="max-w-7xl mx-auto px-6 py-3 flex flex-col gap-1">
+              {navItems.map((item) => {
+                const isActive = activeSection === item.id;
+                return (
+                  <a
+                    key={item.id}
+                    href={`#${item.id}`}
+                    onClick={(e) => handleNavClick(e, item.id)}
+                    className={`px-4 py-3 rounded-full text-sm transition ${
+                      isActive
+                        ? "bg-ember text-primary-foreground"
+                        : "text-cream/80 hover:bg-white/10"
+                    }`}
+                  >
+                    {item.label}
+                  </a>
+                );
+              })}
+            </nav>
+          </div>
+        )}
       </header>
 
       {/* Hero */}
