@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MapPin, Phone, Clock, Star, Utensils, ShoppingBag, Bike, Quote } from "lucide-react";
 import heroBurger from "@/assets/hero-burger.jpg";
 import patatasAlioli from "@/assets/patatas-alioli.jpg";
